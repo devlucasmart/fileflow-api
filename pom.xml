@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.devlucasmart</groupId>
-	<artifactId>fileUploadFileYoutube</artifactId>
+	<artifactId>fileflow</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>fileUploadFileYoutube</name>
+	<name>fileflow</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -64,6 +64,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+    	</dependency>
 	</dependencies>
 
 	<build>

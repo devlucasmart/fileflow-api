@@ -1,10 +1,10 @@
-package com.devlucasmart.fileUploadFileYoutube;
+package com.devlucasmart.fileflow;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FileUploadFileYoutubeApplicationTests {
+class fileflowApplicationTests {
 
 	@Test
 	void contextLoads() {

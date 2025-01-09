@@ -1,4 +1,4 @@
-package com.devlucasmart.fileUploadFileYoutube.controller;
+package com.devlucasmart.fileflow.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,9 +22,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.devlucasmart.fileUploadFileYoutube.service.FileStorageProperties;
+import com.devlucasmart.fileflow.FileStorageProperties;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -41,22 +41,20 @@ public class FileStorageController {
     }
 
     @PostMapping("upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));        
+    public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+        String fileName = StringUtils.cleanPath((Objects.requireNonNull(file.getOriginalFilename())));
         try {
             Path targetLocation = this.fileStorageLocation.resolve(fileName);
             file.transferTo(targetLocation.toFile());
 
-            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                                .path("/api/files/download")
-                                .path(fileName)
-                                .toUriString();
-
-            return ResponseEntity.ok("Upload completed! Download link: " + fileDownloadUri);
+            redirectAttributes.addFlashAttribute("message", "Upload realizado com sucesso: " + fileName);
+            return "redirect:/";
         } catch (IOException e) {
-            return ResponseEntity.badRequest().build();
+            redirectAttributes.addFlashAttribute("message", "Erro ao realizar upload do arquivo.");
+            return "redirect:/";
         }
     }
+
 
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
