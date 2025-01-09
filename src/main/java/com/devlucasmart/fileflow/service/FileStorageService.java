@@ -26,7 +26,6 @@ public class FileStorageService {
                 .toAbsolutePath().normalize();
 
         try {
-            // Cria o diretório caso não exista
             if (!Files.exists(fileStorageLocation)) {
                 Files.createDirectories(fileStorageLocation);
             }
