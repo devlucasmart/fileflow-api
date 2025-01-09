@@ -1,4 +1,4 @@
-package com.devlucasmart.fileflow;
+package com.devlucasmart.fileflow.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

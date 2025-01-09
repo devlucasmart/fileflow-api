@@ -3,46 +3,46 @@
 <head>
     <title>Gerenciador de Arquivos</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body class="container mt-5">
-    <h1 class="text-center">Gerenciador de Arquivos</h1>
+    <h1 class="text-center mb-4">Gerenciador de Arquivos</h1>
 
     <!-- Formulário de Upload -->
-    <form method="POST" action="/api/file/upload" enctype="multipart/form-data" class="mb-4">
-        <div class="mb-3">
+    <form method="POST" action="/api/file/upload" enctype="multipart/form-data" class="upload-form">
+        <div class="input-group mb-3">
             <input type="file" name="file" class="form-control" required>
+            <button type="submit" class="btn btn-primary">Enviar</button>
         </div>
-        <button type="submit" class="btn btn-primary">Enviar Arquivo</button>
     </form>
 
     <!-- Mensagem de Feedback -->
-    <div th:if="${message}" class="alert alert-info" th:text="${message}"></div>
+    <div th:if="${message}" class="alert alert-info mt-3" th:text="${message}"></div>
+
+    <!-- Caixa de Pesquisa -->
+    <div class="search-container mt-4">
+        <div class="input-group">
+            <input type="text" id="search-input" class="form-control" placeholder="Pesquisar arquivos..." oninput="filterFiles()">
+            <button class="btn btn-secondary">Pesquisar</button>
+        </div>
+    </div>
 
     <!-- Lista de Arquivos Disponíveis -->
-    <h2>Arquivos Disponíveis:</h2>
+    <h2 class="mt-4">Arquivos Disponíveis:</h2>
     <ul class="list-group" id="file-list">
-        <!-- Os arquivos serão listados aqui -->
+        <!-- Arquivos listados dinamicamente -->
     </ul>
 
     <script>
-        // Busca os arquivos disponíveis e popula a lista
+        let allFiles = []; // Armazena todos os arquivos
+
+        // Busca os arquivos disponíveis e atualiza a lista
         async function fetchFiles() {
             try {
                 const response = await fetch('/api/file/list');
                 if (response.ok) {
-                    const files = await response.json();
-                    const fileList = document.getElementById('file-list');
-                    fileList.innerHTML = ''; // Limpa a lista antes de popular
-
-                    files.forEach(fileName => {
-                        const li = document.createElement('li');
-                        li.className = 'list-group-item d-flex justify-content-between align-items-center';
-                        li.innerHTML = `
-                            <span>${fileName}</span>
-                            <a href="/api/file/download/${fileName}" class="btn btn-success btn-sm">Baixar</a>
-                        `;
-                        fileList.appendChild(li);
-                    });
+                    allFiles = await response.json(); // Atualiza a variável com todos os arquivos
+                    updateFileList(allFiles); // Renderiza a lista
                 } else {
                     console.error('Erro ao listar arquivos');
                 }
@@ -51,7 +51,30 @@
             }
         }
 
-        // Carrega a lista de arquivos ao carregar a página
+        // Filtra arquivos com base na pesquisa
+        function filterFiles() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filteredFiles = allFiles.filter(fileName => fileName.toLowerCase().includes(query));
+            updateFileList(filteredFiles); // Atualiza a lista de arquivos filtrados
+        }
+
+        // Atualiza a lista de arquivos na interface
+        function updateFileList(files) {
+            const fileList = document.getElementById('file-list');
+            fileList.innerHTML = ''; // Limpa a lista antes de renderizar
+
+            files.forEach(fileName => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.innerHTML = `
+                    <span>${fileName}</span>
+                    <a href="/api/file/download/${fileName}" class="btn btn-success btn-sm">Baixar</a>
+                `;
+                fileList.appendChild(li);
+            });
+        }
+
+        // Carrega os arquivos ao abrir a página
         document.addEventListener('DOMContentLoaded', fetchFiles);
     </script>
 </body>

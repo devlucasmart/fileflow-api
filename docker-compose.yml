@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  file-server:
+    build: .
+    container_name: file-server-container
+    image: lord143/file-server-container
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./uploads:/app/uploads
+    command: ["./wait-for-it.sh", "--", "java", "-Duser.language=pt", "-Duser.country=BR", "-jar", "app.jar"]
