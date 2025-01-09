@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "3c7c470b-c987-4754-8dc8-fcf356049926",
+		"name": "Files",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36883613"
+	},
+	"item": [
+		{
+			"name": "upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/lucas_marruda/Downloads/WhatsApp Image 2025-01-08 at 15.49.10.jpeg"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/api/file/upload",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"file",
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "download",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/file/download/teste.jpeg",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"file",
+						"download",
+						"teste.jpeg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list files",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/file/list",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"file",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
